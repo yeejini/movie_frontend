@@ -1,0 +1,78 @@
+/* 전체 페이지 */
+.login-page {
+  background-color: #d9d9d9; /* 회색 배경 */
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 로그인 영역 */
+.login-container {
+  flex: 1; /* 헤더 제외한 나머지 공간 꽉 채움 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 세로 가운데 */
+  align-items: center; /* 가로 가운데 */
+}
+
+.login-container h1 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+/* 로그인 박스 */
+.login-form {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  width: 300px;
+}
+
+.login-form div {
+  margin-bottom: 15px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.login-form label {
+  font-size: 14px;
+  color: #333;
+}
+
+/* 버튼 스타일 */
+.login-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #b8003c; /* 빨강 계열 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
+  transition: background-color 0.2s;
+}
+
+.login-form button:hover {
+  background-color: #8c002e;
+}
+
+.login-form button[type="button"] {
+  background-color: #444;
+}
+
+.login-form button[type="button"]:hover {
+  background-color: #222;
+}

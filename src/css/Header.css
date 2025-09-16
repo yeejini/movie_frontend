@@ -1,0 +1,35 @@
+.navbar { 
+  background-color: #0b1a33; /* 남색 */
+  color: white;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.navbar-left,
+.navbar-center,
+.navbar-right {
+  flex: 1;
+  text-align: center;
+}
+
+.navbar-left {
+  text-align: left;
+}
+
+.navbar-right {
+  text-align: right;
+}
+
+/* NavLink active 클래스 */
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.navbar a.active {
+  border-bottom: 3px solid #b8003c; /* 빨강 밑줄 */
+  font-weight: bold;
+}
