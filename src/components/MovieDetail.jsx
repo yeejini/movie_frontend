@@ -1,6 +1,6 @@
 import React from "react";
-import "../css/MovieDetail.css"; // 기존 MovieList 스타일 재사용
-// 로컬 이미지 import
+import { useNavigate } from "react-router-dom"; // 추가
+import "../css/MovieDetail.css";
 import spiderman from "../assets/spiderman.png";
 import dune from "../assets/dune.png";
 import dontLookUp from "../assets/donlookup.png";
@@ -39,6 +39,13 @@ const movies = [
 ];
 
 const MovieDetail = () => {
+  const navigate = useNavigate();
+
+  const handleReserve = (movie) => {
+    // BookingPage로 이동하면서 영화 정보 전달
+    navigate("/booking", { state: { movie } });
+  };
+
   return (
     <div className="movie-grid">
       {movies.map((movie) => (
@@ -53,7 +60,12 @@ const MovieDetail = () => {
             <span>💬 {movie.comments}</span>
             <span>👁 {movie.views}</span>
           </div>
-          <button className="reserve-btn">예매하기</button>
+          <button
+            className="reserve-btn"
+            onClick={() => handleReserve(movie)}
+          >
+            예매하기
+          </button>
         </div>
       ))}
     </div>

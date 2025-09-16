@@ -1,0 +1,104 @@
+.steps-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+  justify-content: center;
+}
+
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: #aaa;
+  z-index: 2;
+  position: relative;
+}
+
+.step-label {
+  margin-left: 8px;
+  font-size: 14px;
+  color: #555;
+  z-index: 2;
+  position: relative;
+}
+
+.step-line {
+  position: absolute;
+  height: 2px;
+  background-color: #ccc;
+  top: 50%;
+  transform: translateY(-50%);
+  left: calc(50% + 60px); /* 원과 라벨을 고려한 위치 */
+  right: calc(-50% + 60px); /* 다음 단계의 원과 라벨을 고려한 위치 */
+  z-index: 1;
+}
+
+/* 완료된 선 스타일 */
+.step-line.completed-line {
+  background-color: #b8003c;
+}
+
+/* 활성화된 단계 */
+.step-item.active .step-circle {
+  border-color: #b8003c;
+  background-color: #b8003c;
+  color: white;
+}
+
+.step-item.active .step-label {
+  color: #b8003c;
+  font-weight: bold;
+}
+
+/* 완료된 단계 */
+.step-item.completed .step-circle {
+  border-color: #b8003c;
+  background-color: white;
+  color: #b8003c;
+}
+
+.step-item.completed .step-label {
+  color: #b8003c;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .steps-container {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+  
+  .step-label {
+    font-size: 12px;
+  }
+  
+  .step-circle {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  
+  .step-line {
+    left: calc(50% + 50px);
+    right: calc(-50% + 50px);
+  }
+}
