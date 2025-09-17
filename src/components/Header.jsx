@@ -12,7 +12,7 @@ const Header = () => {
         <Link to="/community">커뮤니티</Link>
       </div>
       <div className="navbar-right">
-        <Link to="/login">내 정보</Link>
+        <Link to="/mypage">내 정보</Link>
       </div>
     </nav>
   );

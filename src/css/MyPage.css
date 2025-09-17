@@ -1,0 +1,26 @@
+.mypage-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.mypage-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.ticket-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ticket-table th, .ticket-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.ticket-table th {
+  background-color: #f4f4f4;
+}
