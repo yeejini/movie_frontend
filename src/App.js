@@ -13,6 +13,7 @@ function App() {
       <Header /> {/* 공통 헤더 */}
       <Routes>
         {/* <Route path="/" element={<MovieDetail />} /> */}
+        <Route path="/" element={<MovieList />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/mypage" element={<MyPage />} />
