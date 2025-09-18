@@ -34,28 +34,30 @@ const MovieDetail = () => {
       .then((data) => {
         console.log("백엔드에서 받은 데이터:", data); // 데이터 확인용
         const moviesWithPoster = data.map((movie, index) => ({
-          ...movie,
-          rank: index + 1,
-          poster: posterMap[movie.title] || "", // 제목 기준 매핑
-          rate: "예매율 N%", // 필요시 백엔드에서 받아오도록 수정 가능
-          release: "개봉일: YYYY.MM.DD", // 필요시 백엔드에서 받아오도록 수정 가능
-          likes: 0,
-          comments: 0,
-          views: 0,
-        }));
+        movieId: movie.movie_id, // 여기에 movie_id를 movieId로 매핑
+        title: movie.title,
+        rank: index + 1,
+        poster: posterMap[movie.title] || "",
+        rate: "예매율 N%",
+        release: "개봉일: YYYY.MM.DD",
+        likes: 0,
+        comments: 0,
+        views: 0,
+      }));
+
         setMovies(moviesWithPoster);
       })
       .catch((err) => console.error("영화 목록 로드 실패:", err));
   }, []);
 
-  const handleReserve = (movie) => {
-    navigate("/booking", { state: { movie } });
+   const handleReserve = (movie) => {
+    navigate("/booking", { state: { movie, allMovies: movies } });
   };
 
   return (
     <div className="movie-grid">
-      {movies.map((movie) => (
-        <div className="movie-card" key={movie.movieId}>
+      {movies.map((movie, index) => (
+       <div className="movie-card" key={movie.movieId || index}>
           <div className="rank">{movie.rank} 위</div>
           {movie.poster && <img src={movie.poster} alt={movie.title} className="poster" />}
           <h3>{movie.title}</h3>

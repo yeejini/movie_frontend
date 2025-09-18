@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import BookingSteps from "./BookingSteps";
 import SeatSelection from "./SeatSelection";
 import "../css/BookingPage.css";
 
-const theaters = ["경기광주", "광교", "구리", "기흥", "김포", "통탄", "배곧", "부천"];
 const screens = {
   "1관": ["11:00", "14:00", "17:00", "20:00", "24:00"],
   "2관": ["10:00", "12:50", "15:45", "18:40", "21:30"],
@@ -21,17 +20,48 @@ const dates = [
 
 const BookingPage = () => {
   const location = useLocation();
-  const selectedMovie = location.state?.movie || null;
+  const [selectedMovie, setSelectedMovie] = useState(location.state?.movie || null);
+  const [allMovies, setAllMovies] = useState(location.state?.allMovies || []);
 
+  const [theaters, setTheaters] = useState([]); // API로 받아올 극장 리스트
   const [selectedTheater, setSelectedTheater] = useState("");
   const [selectedScreen, setSelectedScreen] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [currentStep, setCurrentStep] = useState(1); // 현재 단계 관리
-  const [selectedDate, setSelectedDate] = useState(""); // 날짜 선택 상태 추가
+  const [selectedDate, setSelectedDate] = useState("");
+  const [currentStep, setCurrentStep] = useState(1);
 
+  // 영화에 따른 상영 극장 불러오기
+  useEffect(() => {
+    if (!selectedMovie) return;
+
+    fetch(`http://localhost:8080/theaters/${selectedMovie.movieId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("선택한 영화 id:", selectedMovie.movieId);
+        console.log("영화 상영 극장:", data);
+        setTheaters(data.map((t) => t.theaterName));
+      })
+      .catch((err) => console.error("극장 불러오기 실패:", err));
+  }, [selectedMovie]);
+
+
+  // 전체 영화 리스트가 없는 경우 fetch
+  useEffect(() => {
+    if (allMovies.length === 0) {
+      fetch("http://localhost:8080/movies")
+        .then((res) => res.json())
+        .then((data) => {
+          setAllMovies(data.map((movie) => ({
+            movieId: movie.movie_id,
+            title: movie.title,
+          })));
+        })
+        .catch((err) => console.error("전체 영화 불러오기 실패:", err));
+    }
+  }, [allMovies]);
 
   const handleNextStep = () => {
-    if (currentStep === 1 && selectedTheater && selectedScreen && selectedTime) {
+    if (currentStep === 1 && selectedTheater && selectedScreen && selectedTime && selectedDate) {
       setCurrentStep(2);
     } else if (currentStep === 2) {
       setCurrentStep(3);
@@ -39,12 +69,9 @@ const BookingPage = () => {
   };
 
   const handlePrevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
-  // 좌석 선택 페이지 렌더링 (기존 booking CSS와 분리)
   if (currentStep === 2) {
     return (
       <div>
@@ -61,7 +88,6 @@ const BookingPage = () => {
     );
   }
 
-  // ...existing code...
   return (
     <div className="booking-page">
       <BookingSteps currentStep={currentStep} />
@@ -71,43 +97,40 @@ const BookingPage = () => {
         <div className="movie-list">
           <h3>영화</h3>
           <ul>
-            {[
-              "Spider-Man",
-              "DUNE",
-              "Don't Look Up",
-              "Amelie Of Montmartre",
-              "Encanto",
-              "Titane",
-              "The French Dispatch",
-              "My Salinger Year",
-            ].map((title) => (
-              <li
-                key={title}
-                className={selectedMovie?.title === title ? "active" : ""}
-              >
-                {title}
-              </li>
-            ))}
-          </ul>
+  {allMovies.map((movie) => (
+    <li
+      key={movie.movieId}
+      className={selectedMovie?.movieId === movie.movieId ? "active" : ""}
+      onClick={() => setSelectedMovie(movie)} // 클릭 시 선택 영화 변경
+    >
+      {movie.title}
+    </li>
+  ))}
+</ul>
         </div>
 
-        {/* 상영관/시간 선택 UI를 theater-time 영역으로 이동 */}
+        {/* 극장 선택 */}
         <div className="theater-time">
           <h3>상영관/시간 선택</h3>
           <div>
             <strong>지점 선택</strong>
             <ul>
-              {theaters.map((t) => (
-                <li
-                  key={t}
-                  className={selectedTheater === t ? "active" : ""}
-                  onClick={() => setSelectedTheater(t)}
-                >
-                  {t}
-                </li>
-              ))}
+              {theaters.length > 0 ? (
+                theaters.map((t) => (
+                  <li
+                    key={t}
+                    className={selectedTheater === t ? "active" : ""}
+                    onClick={() => setSelectedTheater(t)}
+                  >
+                    {t}
+                  </li>
+                ))
+              ) : (
+                <li>상영 극장이 없습니다.</li>
+              )}
             </ul>
           </div>
+
           {selectedTheater && (
             <div className="screens">
               {Object.entries(screens).map(([screen, times]) => (
@@ -133,7 +156,7 @@ const BookingPage = () => {
           )}
         </div>
 
-        {/* 날짜 선택을 ticket-info 영역으로 이동 */}
+        {/* 날짜 선택 */}
         <div className="ticket-info">
           <h3>날짜 선택</h3>
           <ul>
@@ -158,7 +181,6 @@ const BookingPage = () => {
       </div>
     </div>
   );
-// ...existing code...
 };
 
 export default BookingPage;
